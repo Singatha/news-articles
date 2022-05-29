@@ -1,0 +1,78 @@
+@import url('../assets/styles/base.css');
+
+.Card {
+    border: 1px solid var(--gray);
+    width: 300px;
+}
+
+.Card.span-row {
+    border: none;
+    grid-column: 1/ span 2;
+    width: 624px;
+}
+
+.Card.span-row img {
+    max-width: 700px;
+    width: 100%;
+}
+
+.side-by-side {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Card img {
+    max-width: 300px;
+    width: 100%
+}
+
+.center {
+    text-align: center;
+}
+
+h3, button, .uppercase {
+    text-transform: uppercase;
+}
+
+.gray {
+    color: var(--gray);
+    font-size: 12px;
+}
+
+h3 {
+    font-family: var(--secondary-ff);
+    padding: 0 20px;
+}
+
+p, .text {
+    font-family: var(--primary-ff);
+}
+
+.text {
+    font-size: 12px;
+    width: 624px;
+}
+
+.Card button {
+    background-color: var(--white);
+    border: 1px solid var(--dark);
+    color: var(--dark-bg);
+    display: block;
+    font-family: var(--primary-ff);
+    font-size: 18px;
+    margin: 0 auto 50px;
+    width: 160px;
+}
+
+.Card.span-row button {
+    background-color: var(--dark);
+    color: var(--white);
+    font-size: 12px;
+    margin: 0 0 30px;
+    width: 140px;
+}
+
+.Card.span-row h3 {
+    padding: 0;
+}
