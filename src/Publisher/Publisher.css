@@ -1,0 +1,25 @@
+@import url('../assets/styles/base.css');
+
+.Publisher > h3 {
+    font-family: var(--secondary-ff);
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0 0 30px;
+    padding: 0;
+}
+
+ul a {
+    color: var(--dark);
+    font-family: var(--primary-ff);
+    font-size: 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--gray);
+}

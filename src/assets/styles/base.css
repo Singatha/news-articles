@@ -1,0 +1,11 @@
+:root {
+    /* colours */
+    --dark: hsl(0, 100%, 0%);
+    --white: hsl(0, 100%, 100%);
+    --gray: #d8d8d8;
+    --purple: #dd0e7b;
+
+    /* fonts */
+    --primary-ff: "Martel Sans";
+    --secondary-ff: "El Messiri";
+}
