@@ -1,6 +1,6 @@
 # News Article
 
-A news article application technical assignment that fetches data from the News API (https://newsapi.org/) and displays it on the UI built using react.
+A technical assignment to create a news article application that fetches data from the News API (https://newsapi.org/) and displays it on the UI built using react.
 
 ## Run Locally
 
