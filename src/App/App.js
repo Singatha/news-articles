@@ -100,7 +100,3 @@ export default function App() {
     );
   }
 }
-
-// try and formatters and linters
-// unit tests
-// mobile responsiveness

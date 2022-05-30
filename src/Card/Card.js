@@ -3,13 +3,13 @@ import moment from "moment";
 
 export default function Card(props) {
   const { articleIndex, pageIndex } = props;
-  const className = articleIndex === pageIndex ? 'Card span-row' : 'Card';
-  const spanRows = articleIndex === pageIndex ? true : false;
+  const className = articleIndex === pageIndex ? 'Card span-columns' : 'Card';
+  const spanColumns = articleIndex === pageIndex ? true : false;
 
   return (
     <>
     {
-      spanRows ? 
+      spanColumns ? 
       (
         <div className={className} >
           <img src={props.imgSrc} alt="Article" width="auto" height="200" />
