@@ -19,7 +19,7 @@ export default function App() {
 
   const publishers = [];
   const filteredArticles = articles.filter((article) => article.source.name === publisher);
-  const total = filteredArticles.length;
+  const total = publisher === '' ? articles.length : filteredArticles.length;
   
 
   const numberOfPages = Math.ceil(total/PAGE_SIZE);
