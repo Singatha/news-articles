@@ -19,7 +19,7 @@ export default function App() {
 
   const publishers = [];
   const filteredArticles = articles.filter((article) => article.source.name === publisher);
-  const total = publisher === '' ? articles.length : filteredArticles.length;
+  const total = filteredArticles.length;
   
 
   const numberOfPages = Math.ceil(total/PAGE_SIZE);
@@ -27,7 +27,7 @@ export default function App() {
   const offset = currentIndex + PAGE_SIZE;
 
   getPublishers(articles, publishers);
-  const currentArticles = publisher === '' ? articles.slice(currentIndex, offset): filteredArticles.slice(currentIndex, offset);
+  const currentArticles = publisher === '' ? articles.slice(currentIndex, offset) : filteredArticles.slice(currentIndex, offset);
 
   const handleChange = (event, value) => {
     setPageNumber(value);
@@ -54,49 +54,56 @@ export default function App() {
     return <p> loading... </p>;
   } else {
     return (
-      <PublisherContext.Provider value={[setPublisher]}>
-        <div className="App">
-          <div className="grid-container">
-            <div className="inner-grid">
-              {currentArticles.length > 0 ?
-                currentArticles.map((article, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      articleIndex={index}
-                      description={article.description}
-                      pageIndex={PAGE_INDEX}
-                      imgSrc={article.urlToImage}
-                      publisher={article.source.name}
-                      title={article.title}
-                      date={article.publishedAt}
-                    />
-                  )
-                })
-                :
-                <p>No results</p>
-              }
-
+      <div className="App">
+        {
+          currentArticles.length > 0 ? 
+          (
+            <div className="grid-container">
+              <div className="inner-grid">
+                {
+                  currentArticles.map((article, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        articleIndex={index}
+                        description={article.description}
+                        pageIndex={PAGE_INDEX}
+                        imgSrc={article.urlToImage}
+                        publisher={article.source.name}
+                        title={article.title}
+                        date={article.publishedAt}
+                      />
+                    )
+                  })
+                }
+              </div>
+              <div className="vertical-line"></div>
+              <PublisherContext.Provider value={[setPublisher]}>
+                <Publisher publishers={publishers} />
+              </PublisherContext.Provider>
+              <Pagination
+                count={numberOfPages}
+                showFirstButton={pageNumber === FIRST_PAGE ? false : true }
+                hidePrevButton={pageNumber === FIRST_PAGE ? true : false }
+                hideNextButton={pageNumber === numberOfPages ? true : false }
+                showLastButton={pageNumber === numberOfPages ? false : true }
+                onChange={handleChange}
+                renderItem={(item) => (
+                  <PaginationItem
+                    components={{ first: KeyboardDoubleArrowLeftIcon, last: KeyboardDoubleArrowRightIcon }}
+                    {...item}
+                  />
+                )}
+              />
             </div>
-            <div className="vertical-line"></div>
-            <Publisher publishers={publishers} />
-            <Pagination
-              count={numberOfPages}
-              showFirstButton={pageNumber === FIRST_PAGE ? false : true }
-              hidePrevButton={pageNumber === FIRST_PAGE ? true : false }
-              hideNextButton={pageNumber === numberOfPages ? true : false }
-              showLastButton={pageNumber === numberOfPages ? false : true }
-              onChange={handleChange}
-              renderItem={(item) => (
-                <PaginationItem
-                  components={{ first: KeyboardDoubleArrowLeftIcon, last: KeyboardDoubleArrowRightIcon }}
-                  {...item}
-                />
-              )}
-            />
-          </div>
-        </div>
-      </PublisherContext.Provider>
+          )
+          :
+          (
+            <p>No results</p>
+          )
+        }
+        
+      </div>
     );
   }
 }
