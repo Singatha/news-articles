@@ -1,32 +1,55 @@
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import App from "./App";
 
-global.fetch = jest.fn();
+const server = setupServer(
+    rest.get('https://newsapi.org/v2/everything', (req, res, ctx) => {
+      return res(ctx.json({greeting: 'hello there'}))
+    }),
+);
+  
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
-test('loading list of articles', async () => {
-    fetch.mockImplementationOnce(() => {
-        return Promise.resolve({
-            status: "ok",
-            totalResults: 0,
-            articles: []
-        });
-    });
-    
-    await act(() => {
-        render(<App />);
-    });
-    
-    expect(screen.getByText('could not load page !')).toBeInTheDocument();
+test('loading empty array', async () => {
+    server.use(
+        rest.get('https://newsapi.org/v2/everything', (req, res, ctx) => {
+            return res(
+                ctx.status(200),
+                ctx.json({
+                    status: "ok",
+                    totalResults: 0,
+                    articles: []
+                })
+            )
+        }),
+    );
+
+    render(<App />);
+
+    await waitFor(() => {screen.getByText('loading...')});
+    expect(screen.getByText('loading...')).toBeInTheDocument();
+
+    await waitFor(() => {screen.getAllByText('No results')});
+    expect(screen.getAllByText('No results')[0]).toBeInTheDocument();
 });
 
-test('loading list of articles when server down or no internet', async () => {
-    fetch.mockImplementationOnce(() => {
-        return Promise.reject({ status: 'error'});
-    });
-    
-    await act(() => {
-        render(<App />);
-    });
+test('return could not load page', async () => {
+    server.use(
+        rest.get('https://newsapi.org/v2/everything', (req, res, ctx) => {
+            return res(
+                ctx.status(500)
+            )
+        }),
+    );
+
+    render(<App />);
+
+    await waitFor(() => { screen.getByText('loading...') });
+    expect(screen.getByText('loading...')).toBeInTheDocument();
+
+    await waitFor(() => { screen.getByText('could not load page !') });
     expect(screen.getByText('could not load page !')).toBeInTheDocument();
 });
